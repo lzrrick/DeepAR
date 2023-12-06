@@ -26,6 +26,7 @@ class DeepAR(nn.Module):
 
     def forward(self, z1, xc, device):
         batch_size = z1.shape[0]
+        # scale factor
         v = torch.mean(z1, dim=1, keepdim=True) + 1
         # encode
         h_t = torch.zeros((1, batch_size, self.hidden_size)).to(
@@ -54,6 +55,7 @@ class DeepAR(nn.Module):
             _, (h_t, c_t) = self.lstm(inputs, (h_t, c_t))
             mu = self.gaussian_mu(h_t[0])
             sigma = self.gaussian_sigma(h_t[0])
+            # gauss sample
             gaussian = torch.distributions.normal.Normal(mu, sigma)
             y_pre = gaussian.sample()
             outputs[:, t - conditioning_range, :] = y_pre * v.reshape(-1, 1)
@@ -92,7 +94,6 @@ def train(model, loader, device):
             ave_loss += loss.item()
             optim.zero_grad()
             loss.backward()
-            # nn.utils.clip_grad_norm_(model.parameters(), 1)
             optim.step()
         loss_array.append(ave_loss / len(loader))
         plt.cla()

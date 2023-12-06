@@ -49,4 +49,3 @@ if __name__ == '__main__':
         xc = xc.repeat(z1.shape[0], 1, 1)
         print(z1.shape, z2.shape, xc.shape)
     print(len(loader))
-# idx * interval + conditioning_range + prediction_range = data_len -> idx =

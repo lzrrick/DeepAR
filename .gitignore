@@ -1,3 +1,4 @@
+__pycache__/
 dataset/electricity.txt
 dataset/train.csv
 dataset/test.csv
